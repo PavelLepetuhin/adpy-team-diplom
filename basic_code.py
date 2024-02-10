@@ -30,11 +30,11 @@ for event in longpoll.listen():
                 write_msg(event.user_id, f"Хай, {event.user_id}")
 
             elif request == "Найди мне пару":
-                return_message(vk, event, counter, token, event.user_id)
+                return_message(personal_token, vk, event, counter, token, event.user_id)
 
             elif request == 'Покажи ещё':
                 counter += 1
-                return_message(vk, event, counter, token, event.user_id)
+                return_message(personal_token, vk, event, counter, token, event.user_id)
 
             elif request == 'В чёрный список':
                 pass

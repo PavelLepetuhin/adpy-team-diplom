@@ -7,12 +7,12 @@ from scripts.vk_find_photo import get_photos_links
 from scripts.vk_get_user_info import get_searcher_info
 
 
-def return_message(vk, event, counter, token, user_id):
+def return_message(personal_token, vk, event, counter, token, user_id):
     age, city_id, sex = get_searcher_info(token, user_id)
-    search_result, ids = search_users(age, city_id, sex)
+    search_result, ids = search_users(personal_token, age, city_id, sex)
     if counter < len(search_result):
         user_id = ids[counter]
-        photos = get_photos_links(user_id)
+        photos = get_photos_links(personal_token, user_id)
         type_ = 'photo'
         owner_id = user_id
         message = search_result[counter]
