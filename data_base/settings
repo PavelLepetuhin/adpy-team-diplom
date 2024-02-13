@@ -1,0 +1,6 @@
+# create a module "settings.py"
+
+USER=username_BD
+PASSWORD=password_DB
+HOST=localhost
+DB_NAME=name_DB

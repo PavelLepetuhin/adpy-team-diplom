@@ -6,9 +6,11 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from scripts.keyboard_main import keyboard_main
 from scripts.return_message import return_message
 
+token = 'vk1.a.7MO6NuCs4vEa4oUzmGpN3OQ6TmGMMplJn0yc7fnYBWPlYabofFDIE5aU7YxJN-xP4F5iDhzhq9jkorNbtzvc8vTw2txN7bCSrwKulpbbUO-gLWqlxljZpJwaCp8ByKgDCOe71gmd2QSsJLoJytRlTpbGuLfs6h6ivT5RW4kqQ3ndVqKiL85to2YATtvRmmcjKpIPVMXlA1zZA8yzOyFJMg'
+personal_token = 'vk1.a.zSlO9ah3SvzMAfImk4CL4NxxKvrLzD_wSQHLS2Eg9TwJPUXZm12kZBsN3_MCcF1AiWUgwCdvBS8Ryigbjf0XeSkoR4gLIG2EBeApLFStCSSqlgYvAjGAPBUVpZM23mA3Ruq9O5ZktRmIyAasfnjWLE8cBwCZ6ICzA_QKUwT7299OHyAPxheVhVyMv_Sv5igpwC_iNSyYSFdv1G4U8wQF-Q'
 
-token = input('Token: ')
-personal_token = input('Personal token: ')
+# token = input('Token: ')
+# personal_token = input('Personal token: ')
 
 vk = vk_api.VkApi(token=token)
 longpoll = VkLongPoll(vk)
