@@ -3,16 +3,17 @@ from random import randrange
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 
+from data_base.insert_database import add_bot_users, Base, engine, add_top3, add_favorite
+from data_base.select_database import select_current_user, select_one_favorite, select_all_favorites, check_current_user
 from scripts.keyboard_main import keyboard_main
 from scripts.return_message import return_message
+from scripts.vk_add_to_favorites import add_to_vk_favorites
+from scripts.vk_get_user_info import get_current_user_info
 
-token = 'vk1.a.7MO6NuCs4vEa4oUzmGpN3OQ6TmGMMplJn0yc7fnYBWPlYabofFDIE5aU7YxJN-xP4F5iDhzhq9jkorNbtzvc8vTw2txN7bCSrwKulpbbUO-gLWqlxljZpJwaCp8ByKgDCOe71gmd2QSsJLoJytRlTpbGuLfs6h6ivT5RW4kqQ3ndVqKiL85to2YATtvRmmcjKpIPVMXlA1zZA8yzOyFJMg'
-personal_token = 'vk1.a.zSlO9ah3SvzMAfImk4CL4NxxKvrLzD_wSQHLS2Eg9TwJPUXZm12kZBsN3_MCcF1AiWUgwCdvBS8Ryigbjf0XeSkoR4gLIG2EBeApLFStCSSqlgYvAjGAPBUVpZM23mA3Ruq9O5ZktRmIyAasfnjWLE8cBwCZ6ICzA_QKUwT7299OHyAPxheVhVyMv_Sv5igpwC_iNSyYSFdv1G4U8wQF-Q'
+community_token = input('Community token: ')
+personal_token = input('Personal token: ')
 
-# token = input('Token: ')
-# personal_token = input('Personal token: ')
-
-vk = vk_api.VkApi(token=token)
+vk = vk_api.VkApi(token=community_token)
 longpoll = VkLongPoll(vk)
 
 
@@ -20,7 +21,18 @@ def write_msg(user_id, message):
     vk.method('messages.send', {'user_id': user_id, 'message': message,  'random_id': randrange(10 ** 7),
                                 'keyboard': keyboard_main()})
 
+
+Base.metadata.create_all(engine)
+
 counter = 0
+
+vk_id = int()
+
+attachments = []
+
+message = ''
+
+
 for event in longpoll.listen():
 
     if event.type == VkEventType.MESSAGE_NEW:
@@ -28,21 +40,35 @@ for event in longpoll.listen():
         if event.to_me:
             request = event.text
 
+            age, city_id, sex = get_current_user_info(community_token, event.user_id)
+
+            if check_current_user(event.user_id) == None:
+                add_bot_users(event.user_id, city_id, age, sex)
+
+
             if request == "Привет":
                 write_msg(event.user_id, f"Хай, {event.user_id}")
 
             elif request == "Найди мне пару":
-                return_message(personal_token, vk, event, counter, token, event.user_id)
+                result, vk_id, attachments, message = return_message(personal_token, vk, event, counter, community_token, event.user_id)
+
 
             elif request == 'Покажи ещё':
                 counter += 1
-                return_message(personal_token, vk, event, counter, token, event.user_id)
+                result, vk_id, attachments, message = return_message(personal_token, vk, event, counter, community_token, event.user_id)
 
             elif request == 'В чёрный список':
                 pass
 
+            elif request == 'Назад':
+                write_msg(event.user_id, 'Возвращаемся в главное меню.')
+
+            elif request == 'В избранное':
+                add_to_vk_favorites(event.user_id, vk, vk_id, message, attachments)
+
+
             elif request == 'Мои избранные':
-                pass
+                select_all_favorites(event.user_id)
 
             else:
                 write_msg(event.user_id, "Не поняла вашего ответа...")

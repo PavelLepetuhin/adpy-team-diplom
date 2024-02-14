@@ -2,10 +2,9 @@ import vk_api
 from datetime import date
 
 
-def get_searcher_info(token, user_id):
+def get_current_user_info(token, user_id):
     vk = vk_api.VkApi(token=token)
     vk_get_info = vk.method('users.get', {'user_ids': user_id, 'fields': 'bdate, sex, city'})
-
     birth_date = vk_get_info[0].get('bdate', '')
     if birth_date == '':
         return 'У вас не указана дата рождения. Для продолжения работы, пожалуйста, укажите дату рождения в вашем профиле.'
@@ -24,3 +23,8 @@ def get_searcher_info(token, user_id):
     if sex == '':
         return 'У вас не указан пол. Для продолжения работы, пожалуйста, укажите пол в вашем профиле.'
     return age, city_id, sex
+
+def get_favorite_user_info(token, user_id):
+    vk = vk_api.VkApi(token=token)
+    vk_get_info = vk.method('users.get', {'user_ids': user_id, 'fields': 'bdate, sex, city'})
+    return vk_get_info
