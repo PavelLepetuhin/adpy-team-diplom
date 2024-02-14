@@ -4,7 +4,7 @@ import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from data_base.insert_database import add_bot_users, Base, engine, add_top3, add_favorite
-from data_base.select_database import select_current_user, select_one_favorite, select_all_favorites, check_current_user
+from data_base.select_database import select_all_favorites, check_current_user
 from scripts.keyboard_main import keyboard_main
 from scripts.return_message import return_message
 from scripts.vk_add_to_favorites import add_to_vk_favorites
