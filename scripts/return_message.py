@@ -1,5 +1,6 @@
 from random import randrange
 
+from data_base.select_database import select_all_favorites
 from scripts.keyboard_main import keyboard_main
 from scripts.keyboard_search import keyboard_search
 from scripts.search_users import search_users
@@ -20,3 +21,14 @@ def return_message(personal_token, vk, event, counter, current_user_id, search_r
     else:
         return vk.method('messages.send', {'user_id': event.user_id, 'message': 'Больше нет подходящих пользователей.',
                                     'random_id': randrange(10 ** 7), 'keyboard': keyboard_main()})
+
+def return_favorites_list(favorites, vk, count, current_user_id):
+    link = favorites[count][0]
+    name = favorites[count][1]
+    surname = favorites[count][2]
+    attachments = [favorites[count][i] for i in range(3,6) if favorites[count][i] != None]
+    message = f'{name} {surname} {link}'
+    count += 1
+    return vk.method('messages.send', {'user_id': current_user_id, 'message': message,
+                                'random_id': randrange(10 ** 7), 'attachment': ','.join(attachments),
+                                'keyboard': keyboard_main()})

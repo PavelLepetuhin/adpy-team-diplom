@@ -7,7 +7,7 @@ from data_base.insert_database import add_bot_users, Base, engine, add_top3, add
 from data_base.select_database import select_all_favorites, check_current_user
 from scripts.add_to_vk_blacklist import add_to_vk_blacklist
 from scripts.keyboard_main import keyboard_main
-from scripts.return_message import return_message
+from scripts.return_message import return_message, return_favorites_list
 from scripts.search_users import search_users
 from scripts.vk_add_to_favorites import add_to_vk_favorites
 from scripts.vk_get_user_info import get_current_user_info
@@ -79,7 +79,11 @@ for event in longpoll.listen():
 
 
             elif request == 'Мои избранные':
-                select_all_favorites(event.user_id)
+                favorites = select_all_favorites(event.user_id)
+                count = 0
+                while count < len(favorites):
+                    return_favorites_list(favorites, vk, count, event.user_id)
+                    count += 1
 
             else:
                 write_msg(event.user_id, "Не поняла вашего ответа...")
