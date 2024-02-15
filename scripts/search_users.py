@@ -7,7 +7,7 @@ def search_users(personal_token, age, city_id, sex, current_user_id):
     vk = vk_api.VkApi(token=personal_token)
     if sex == 1:
         sex = 2
-    if sex == 2:
+    elif sex == 2:
         sex = 1
     vk_search_users = vk.method('users.search', {'city_id': city_id, 'age_from': 18, 'age_to': age, 'sex': sex,
                                                  'has_photo': 1, 'count': 1000, 'fields': 'is_friend'})
