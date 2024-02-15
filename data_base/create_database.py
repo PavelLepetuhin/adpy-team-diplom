@@ -4,7 +4,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 import datetime
 
-from settings import USER, PASSWORD, HOST, DB_NAME
+from .settings import (USER, PASSWORD, HOST, DB_NAME)
 
 # Создание подключения к базе данных
 connection_string = f"postgresql://{USER}:{PASSWORD}@{HOST}/{DB_NAME}"
@@ -20,7 +20,7 @@ class BotUsers(Base):
     __tablename__ = 'botusers'
     id = Column(Integer, primary_key=True)
     vk_id = Column(BigInteger)
-    city = Column(String(50))
+    city = Column(Integer)
     age = Column(Integer)
     gender = Column(Integer)
 
@@ -33,8 +33,6 @@ class Favourite(Base):
     link = Column(String(200))
     name = Column(String(30))
     surname = Column(String(40))
-    birth_date = Column(Date)
-    city = Column(String(50))
 
 
 class Top3Photo(Base):
@@ -49,11 +47,8 @@ class Top3Photo(Base):
 class Blacklist(Base):
     __tablename__ = 'blacklist'
     id = Column(Integer, primary_key=True)
-    favourites_id = Column(Integer, ForeignKey('favourites.id'))
+    botusers_id = Column(Integer, ForeignKey('botusers.id'))
     vk_id = Column(BigInteger)
-    name = Column(String(30))
-    surname = Column(String(40))
-    date = Column(DateTime, default=datetime.datetime.utcnow)
 
 
 # Base.metadata.drop_all(engine)

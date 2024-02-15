@@ -1,8 +1,9 @@
 import vk_api
-from pprint import pprint
+
+from data_base.select_database import select_blacklist
 
 
-def search_users(personal_token, age, city_id, sex):
+def search_users(personal_token, age, city_id, sex, current_user_id):
     vk = vk_api.VkApi(token=personal_token)
     if sex == 1:
         sex = 2
@@ -13,9 +14,13 @@ def search_users(personal_token, age, city_id, sex):
     users = []
     ids = []
     for idx in range(len(search_result)):
-        name = search_result[idx].get('first_name') + ' ' + search_result[idx].get('last_name')
         id_ = search_result[idx].get('id')
-        user = f"{name} https://vk.com/id{id_}"
-        users.append(user)
-        ids.append(id_)
+        check_in_blacklist = select_blacklist(current_user_id, id_)
+        if check_in_blacklist != None:
+            continue
+        else:
+            name = search_result[idx].get('first_name') + ' ' + search_result[idx].get('last_name')
+            user = f"{name} https://vk.com/id{id_}"
+            users.append(user)
+            ids.append(id_)
     return users, ids

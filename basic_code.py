@@ -5,8 +5,10 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 
 from data_base.insert_database import add_bot_users, Base, engine, add_top3, add_favorite
 from data_base.select_database import select_all_favorites, check_current_user
+from scripts.add_to_vk_blacklist import add_to_vk_blacklist
 from scripts.keyboard_main import keyboard_main
 from scripts.return_message import return_message
+from scripts.search_users import search_users
 from scripts.vk_add_to_favorites import add_to_vk_favorites
 from scripts.vk_get_user_info import get_current_user_info
 
@@ -27,10 +29,15 @@ Base.metadata.create_all(engine)
 counter = 0
 
 vk_id = int()
-
 attachments = []
-
 message = ''
+
+search_result = None
+ids = None
+
+age = None
+city_id = None
+sex = None
 
 
 for event in longpoll.listen():
@@ -39,8 +46,8 @@ for event in longpoll.listen():
 
         if event.to_me:
             request = event.text
-
-            age, city_id, sex = get_current_user_info(community_token, event.user_id)
+            if age == None and city_id == None and sex == None:
+                age, city_id, sex = get_current_user_info(community_token, event.user_id)
 
             if check_current_user(event.user_id) == None:
                 add_bot_users(event.user_id, city_id, age, sex)
@@ -50,15 +57,19 @@ for event in longpoll.listen():
                 write_msg(event.user_id, f"Хай, {event.user_id}")
 
             elif request == "Найди мне пару":
-                result, vk_id, attachments, message = return_message(personal_token, vk, event, counter, community_token, event.user_id)
+                if search_result == None and ids == None:
+                    search_result, ids = search_users(personal_token, age, city_id, sex, event.user_id)
+                result, vk_id, attachments, message = return_message(personal_token, vk, event, counter, event.user_id,
+                                                                     search_result, ids)
 
 
             elif request == 'Покажи ещё':
                 counter += 1
-                result, vk_id, attachments, message = return_message(personal_token, vk, event, counter, community_token, event.user_id)
+                result, vk_id, attachments, message = return_message(personal_token, vk, event, counter, event.user_id,
+                                                                     search_result, ids)
 
             elif request == 'В чёрный список':
-                pass
+                add_to_vk_blacklist(event.user_id, vk, vk_id)
 
             elif request == 'Назад':
                 write_msg(event.user_id, 'Возвращаемся в главное меню.')
