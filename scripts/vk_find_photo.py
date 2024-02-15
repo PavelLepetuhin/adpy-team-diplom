@@ -1,5 +1,4 @@
 import vk_api
-from pprint import pprint
 
 
 def get_user_photos(personal_token, search_id):
@@ -10,10 +9,12 @@ def get_user_photos(personal_token, search_id):
     except vk_api.exceptions.VkApiError:
         return []
 
+
 def get_top_photos_by_likes(personal_token, search_id):
     photos = get_user_photos(personal_token, search_id)
     photos.sort(key=lambda x: x.get('likes', {}).get('count'), reverse=True)
     return photos[0:3]
+
 
 def get_photos_links(personal_token, search_id):
     photos = get_top_photos_by_likes(personal_token, search_id)

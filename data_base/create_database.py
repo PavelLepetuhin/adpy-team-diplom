@@ -1,8 +1,6 @@
 import sqlalchemy
-from sqlalchemy import create_engine, Column, Integer, String, Date, ForeignKey, BigInteger, DateTime
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, BigInteger
 from sqlalchemy.orm import relationship
-import datetime
 
 from .settings import (USER, PASSWORD, HOST, DB_NAME)
 
@@ -10,9 +8,6 @@ from .settings import (USER, PASSWORD, HOST, DB_NAME)
 connection_string = f"postgresql://{USER}:{PASSWORD}@{HOST}/{DB_NAME}"
 engine = create_engine(connection_string)
 Base = sqlalchemy.orm.declarative_base()
-
-
-
 
 
 # Создание классов для каждой таблицы
@@ -51,6 +46,5 @@ class Blacklist(Base):
     vk_id = Column(BigInteger)
 
 
-# Base.metadata.drop_all(engine)
 # Создание таблиц в базе данных
 Base.metadata.create_all(engine)

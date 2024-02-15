@@ -3,7 +3,7 @@ from random import randrange
 import vk_api
 from vk_api.longpoll import VkLongPoll, VkEventType
 
-from data_base.insert_database import add_bot_users, Base, engine, add_top3, add_favorite
+from data_base.insert_database import add_bot_users, Base, engine
 from data_base.select_database import select_all_favorites, check_current_user
 from scripts.add_to_vk_blacklist import add_to_vk_blacklist
 from scripts.keyboard_main import keyboard_main
@@ -20,7 +20,7 @@ longpoll = VkLongPoll(vk)
 
 
 def write_msg(user_id, message):
-    vk.method('messages.send', {'user_id': user_id, 'message': message,  'random_id': randrange(10 ** 7),
+    vk.method('messages.send', {'user_id': user_id, 'message': message, 'random_id': randrange(10 ** 7),
                                 'keyboard': keyboard_main()})
 
 
@@ -39,30 +39,27 @@ age = None
 city_id = None
 sex = None
 
-
 for event in longpoll.listen():
 
     if event.type == VkEventType.MESSAGE_NEW:
 
         if event.to_me:
             request = event.text
-            if age == None and city_id == None and sex == None:
+            if age is None and city_id is None and sex is None:
                 age, city_id, sex = get_current_user_info(community_token, event.user_id)
 
-            if check_current_user(event.user_id) == None:
+            if check_current_user(event.user_id) is None:
                 add_bot_users(event.user_id, city_id, age, sex)
-
 
             if request == "Привет":
                 write_msg(event.user_id, f"Хай, {event.user_id}")
 
             elif request == "Найди мне пару":
                 write_msg(event.user_id, 'Ищем подходящих пользователей.')
-                if search_result == None and ids == None:
+                if search_result is None and ids is None:
                     search_result, ids = search_users(personal_token, age, city_id, sex, event.user_id)
                 result, vk_id, attachments, message = return_message(personal_token, vk, event, counter, event.user_id,
                                                                      search_result, ids)
-
 
             elif request == 'Покажи ещё':
                 counter += 1
@@ -74,7 +71,6 @@ for event in longpoll.listen():
 
             elif request == 'В избранное':
                 add_to_vk_favorites(event.user_id, vk, vk_id, message, attachments)
-
 
             elif request == 'Мои избранные':
                 favorites = select_all_favorites(event.user_id)

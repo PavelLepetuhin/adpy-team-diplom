@@ -12,6 +12,7 @@ connection_string = f"postgresql://{USER}:{PASSWORD}@{HOST}/{DB_NAME}"
 engine = create_engine(connection_string, pool_size=1000)
 Base = declarative_base()
 
+
 def select_current_user(user_id):
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -20,6 +21,7 @@ def select_current_user(user_id):
     metadata.reflect(bind=engine)
     stmt = select(bot_users).where(bot_users.vk_id.in_([user_id]))
     return session.scalar(stmt).id
+
 
 def check_current_user(user_id):
     Session = sessionmaker(bind=engine)
@@ -30,6 +32,7 @@ def check_current_user(user_id):
     stmt = (select(bot_users)
             .where(bot_users.vk_id.in_([user_id])))
     return session.scalars(stmt).one_or_none()
+
 
 def select_all_favorites(curent_user_id):
     Session = sessionmaker(bind=engine)
@@ -48,6 +51,7 @@ def select_all_favorites(curent_user_id):
 
     return favorites
 
+
 def select_one_favorite(current_user_id, favorite_vk_id):
     Session = sessionmaker(bind=engine)
     session = Session()
@@ -59,8 +63,6 @@ def select_one_favorite(current_user_id, favorite_vk_id):
             .where(BotUsers.vk_id.in_([current_user_id]))
             .where(Favourite.vk_id.in_([favorite_vk_id])))
     return session.scalars(stmt).one_or_none()
-
-
 
 
 def select_blacklist(current_user_id, vk_id):
