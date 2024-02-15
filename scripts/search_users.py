@@ -9,14 +9,17 @@ def search_users(personal_token, age, city_id, sex, current_user_id):
         sex = 2
     if sex == 2:
         sex = 1
-    vk_search_users = vk.method('users.search', {'city_id': city_id, 'age_from': 18, 'age_to': age, 'sex': sex, 'has_photo': 1})
+    vk_search_users = vk.method('users.search', {'city_id': city_id, 'age_from': 18, 'age_to': age, 'sex': sex,
+                                                 'has_photo': 1, 'count': 1000, 'fields': 'is_friend'})
     search_result = vk_search_users.get('items')
+    total_count = vk_search_users.get('count')
     users = []
     ids = []
     for idx in range(len(search_result)):
         id_ = search_result[idx].get('id')
         check_in_blacklist = select_blacklist(current_user_id, id_)
-        if check_in_blacklist != None:
+        if (check_in_blacklist != None or search_result[idx].get('is_closed') == True
+                or search_result[idx].get('is_friend') == 1):
             continue
         else:
             name = search_result[idx].get('first_name') + ' ' + search_result[idx].get('last_name')

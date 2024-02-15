@@ -27,7 +27,7 @@ def return_favorites_list(favorites, vk, count, current_user_id):
     name = favorites[count][1]
     surname = favorites[count][2]
     attachments = [favorites[count][i] for i in range(3,6) if favorites[count][i] != None]
-    message = f'{name} {surname} {link}'
+    message = f'{count + 1}. {name} {surname} {link}'
     count += 1
     return vk.method('messages.send', {'user_id': current_user_id, 'message': message,
                                 'random_id': randrange(10 ** 7), 'attachment': ','.join(attachments),

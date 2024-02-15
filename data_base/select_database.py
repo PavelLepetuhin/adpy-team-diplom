@@ -9,7 +9,7 @@ from data_base.create_database import Favourite, BotUsers, Blacklist, Top3Photo
 
 # Создание подключения к базе данных
 connection_string = f"postgresql://{USER}:{PASSWORD}@{HOST}/{DB_NAME}"
-engine = create_engine(connection_string)
+engine = create_engine(connection_string, pool_size=1000)
 Base = declarative_base()
 
 def select_current_user(user_id):

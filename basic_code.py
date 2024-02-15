@@ -57,6 +57,7 @@ for event in longpoll.listen():
                 write_msg(event.user_id, f"Хай, {event.user_id}")
 
             elif request == "Найди мне пару":
+                write_msg(event.user_id, 'Ищем подходящих пользователей.')
                 if search_result == None and ids == None:
                     search_result, ids = search_users(personal_token, age, city_id, sex, event.user_id)
                 result, vk_id, attachments, message = return_message(personal_token, vk, event, counter, event.user_id,
@@ -70,9 +71,6 @@ for event in longpoll.listen():
 
             elif request == 'В чёрный список':
                 add_to_vk_blacklist(event.user_id, vk, vk_id)
-
-            elif request == 'Назад':
-                write_msg(event.user_id, 'Возвращаемся в главное меню.')
 
             elif request == 'В избранное':
                 add_to_vk_favorites(event.user_id, vk, vk_id, message, attachments)
