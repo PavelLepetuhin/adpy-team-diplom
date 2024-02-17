@@ -1,3 +1,5 @@
+import random
+
 import vk_api
 
 from data_base.select_database import select_blacklist
@@ -21,7 +23,8 @@ def search_users(personal_token, age, city_id, sex, current_user_id):
     search_result = vk_search_users.get('items')
     users = []
     ids = []
-    for idx in range(len(search_result)):
+    for user in search_result:
+        idx = random.randint(0, len(search_result) - 1)
         id_ = search_result[idx].get('id')
         check_in_blacklist = select_blacklist(current_user_id, id_)
         if (check_in_blacklist is not None or search_result[idx].get('is_closed') is True
