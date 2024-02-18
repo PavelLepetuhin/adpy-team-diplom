@@ -2,7 +2,8 @@ import sqlalchemy
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, BigInteger
 from sqlalchemy.orm import relationship
 
-from .settings import (USER, PASSWORD, HOST, DB_NAME)
+from data_base.settings import (USER, PASSWORD, HOST, DB_NAME)
+
 
 # Создание подключения к базе данных
 connection_string = f"postgresql://{USER}:{PASSWORD}@{HOST}/{DB_NAME}"
@@ -44,7 +45,6 @@ class Blacklist(Base):
     id = Column(Integer, primary_key=True)
     botusers_id = Column(Integer, ForeignKey('botusers.id'))
     vk_id = Column(BigInteger)
-
 
 # Создание таблиц в базе данных
 Base.metadata.create_all(engine)
