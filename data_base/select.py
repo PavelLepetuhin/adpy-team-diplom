@@ -5,7 +5,7 @@ from sqlalchemy import create_engine, MetaData, select
 from sqlalchemy.orm import declarative_base
 
 from data_base.settings import USER, PASSWORD, HOST, DB_NAME
-from data_base.create_database import Favourite, BotUsers, Blacklist, Top3Photo
+from data_base.models import Favourite, BotUsers, Blacklist, Top3Photo
 
 # Создание подключения к базе данных
 connection_string = f"postgresql://{USER}:{PASSWORD}@{HOST}/{DB_NAME}"
@@ -41,7 +41,7 @@ def select_all_favorites(curent_user_id):
     favorites = Favourite
     metadata.reflect(bind=engine)
     stmt = (select(favorites.link, favorites.name, favorites.surname, Top3Photo.photo_1, Top3Photo.photo_2,
-                   Top3Photo.photo_3)
+                    Top3Photo.photo_3)
             .join(BotUsers)
             .join(Top3Photo)
             .where(BotUsers.vk_id.in_([curent_user_id])))

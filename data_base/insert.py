@@ -1,4 +1,4 @@
-from data_base.create_database import Favourite, BotUsers, Top3Photo, Blacklist
+from data_base.models import Favourite, BotUsers, Top3Photo, Blacklist
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
 

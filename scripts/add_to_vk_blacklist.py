@@ -1,7 +1,7 @@
 from random import randrange
 
-from data_base.insert_database import add_blacklist
-from data_base.select_database import select_current_user
+from data_base.insert import add_blacklist
+from data_base.select import select_current_user
 from scripts.keyboard_main import keyboard_main
 
 

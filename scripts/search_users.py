@@ -2,7 +2,7 @@ import random
 
 import vk_api
 
-from data_base.select_database import select_blacklist
+from data_base.select import select_blacklist
 
 
 def search_users(personal_token, age, city_id, sex, current_user_id):
