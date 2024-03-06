@@ -6,6 +6,7 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 from data_base.insert import add_bot_users, Base, engine
 from data_base.models import create_tables
 from data_base.select import select_all_favorites, check_current_user
+
 from scripts.vk import add_to_vk_blacklist
 from scripts.keyboard import keyboard_main
 from scripts.return_message import return_message, return_favorites_list
@@ -20,7 +21,6 @@ import os
 
 community_token = os.getenv('Community_token')
 personal_token = os.getenv('Personal_token')
-
 
 vk = vk_api.VkApi(token=community_token)
 longpoll = VkLongPoll(vk)
@@ -88,6 +88,7 @@ for event in longpoll.listen():
 
             else:
                 write_msg(event.user_id, "Не поняла вашего ответа...")
+
 
 if __name__ == "__main__":
     write_msg()

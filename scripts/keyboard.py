@@ -13,6 +13,7 @@ def keyboard_main():
 
 def keyboard_search():
     keyboard = VkKeyboard(inline=True)
+
     keyboard.add_button('Покажи ещё', color=VkKeyboardColor.PRIMARY)
     keyboard.add_button('В избранное', color=VkKeyboardColor.POSITIVE)
     keyboard.add_button('В чёрный список', color=VkKeyboardColor.NEGATIVE)

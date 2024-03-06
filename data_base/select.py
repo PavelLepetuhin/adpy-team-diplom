@@ -1,6 +1,5 @@
 
 from sqlalchemy.orm import sessionmaker
-
 from sqlalchemy import create_engine, MetaData, select
 from sqlalchemy.orm import declarative_base
 

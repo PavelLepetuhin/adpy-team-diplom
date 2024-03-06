@@ -2,7 +2,6 @@ import sqlalchemy as sq
 from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, BigInteger
 from sqlalchemy.orm import declarative_base, relationship
 
-
 from data_base.settings import (USER, PASSWORD, HOST, DB_NAME)
 
 

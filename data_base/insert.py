@@ -1,10 +1,11 @@
-from sqlalchemy.exc import SQLAlchemyError
 
 from data_base.models import Favourite, BotUsers, Top3Photo, Blacklist
+from data_base.settings import USER, PASSWORD, HOST, DB_NAME
+
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
+from sqlalchemy.exc import SQLAlchemyError
 
-from data_base.settings import USER, PASSWORD, HOST, DB_NAME
 
 # Создание подключения к базе данных
 connection_string = f"postgresql://{USER}:{PASSWORD}@{HOST}/{DB_NAME}"

@@ -1,9 +1,12 @@
 import vk_api
 
 from random import randrange
+
 from datetime import date
+
 from data_base.insert import add_blacklist,add_favorite, add_top3
 from data_base.select import select_current_user, select_one_favorite
+
 from scripts.keyboard import keyboard_main
 
 
@@ -35,6 +38,7 @@ def add_to_vk_favorites(user_id, vk, vk_id, message, attachments):
                                            'random_id': randrange(10 ** 7),
                                            'keyboard': keyboard_main()})
 
+
 def get_user_photos(personal_token, search_id):
     vk = vk_api.VkApi(token=personal_token)
     try:
@@ -43,10 +47,12 @@ def get_user_photos(personal_token, search_id):
     except vk_api.exceptions.VkApiError:
         return []
 
+
 def get_top_photos_by_likes(personal_token, search_id):
     photos = get_user_photos(personal_token, search_id)
     photos.sort(key=lambda x: x.get('likes', {}).get('count'), reverse=True)
     return photos[0:3]
+
 
 def get_photos_links(personal_token, search_id):
     photos = get_top_photos_by_likes(personal_token, search_id)
