@@ -88,3 +88,6 @@ for event in longpoll.listen():
 
             else:
                 write_msg(event.user_id, "Не поняла вашего ответа...")
+
+if __name__ == "__main__":
+    write_msg()

@@ -56,12 +56,11 @@ def select_one_favorite(current_user_id, favorite_vk_id):
     Session = sessionmaker(bind=engine)
     session = Session()
     metadata = MetaData()
-    favorites = Favourite
     metadata.reflect(bind=engine)
-    stmt = (select(favorites)
+    stmt = (select(Favourite)
             .join(BotUsers)
-            .where(BotUsers.vk_id.in_([current_user_id]))
-            .where(Favourite.vk_id.in_([favorite_vk_id])))
+            .where(BotUsers.vk_id == current_user_id)
+            .where(Favourite.vk_id == favorite_vk_id))
     return session.scalars(stmt).one_or_none()
 
 
