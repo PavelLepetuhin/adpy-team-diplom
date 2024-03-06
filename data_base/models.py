@@ -36,16 +36,6 @@ class Favourite(Base):
     botusers = relationship(BotUsers, backref="favourites")
 
 
-# class Photo(Base):
-#     __tablename__ = 'photos'
-#
-#     id = sq.Column(sq.Integer, primary_key=True)
-#     favourites_id = sq.Column(sq.Integer, sq.ForeignKey('favourites.id'))
-#     url = sq.Column(sq.String)
-#
-#     favourites = relationship(Favourite, backref="photos")
-
-
 class Top3Photo(Base):
     __tablename__ = 'top3photo'
 

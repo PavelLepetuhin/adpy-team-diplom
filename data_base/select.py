@@ -41,7 +41,7 @@ def select_all_favorites(curent_user_id):
     favorites = Favourite
     metadata.reflect(bind=engine)
     stmt = (select(favorites.link, favorites.name, favorites.surname, Top3Photo.photo_1, Top3Photo.photo_2,
-                    Top3Photo.photo_3)
+                   Top3Photo.photo_3)
             .join(BotUsers)
             .join(Top3Photo)
             .where(BotUsers.vk_id.in_([curent_user_id])))

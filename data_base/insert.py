@@ -1,3 +1,5 @@
+from sqlalchemy.exc import SQLAlchemyError
+
 from data_base.models import Favourite, BotUsers, Top3Photo, Blacklist
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, declarative_base
@@ -35,29 +37,16 @@ def add_favorite(botusers_id, vk_id, link, name, surname):
 
 
 def add_top3(favourites_id, photos):
+    top_photos = {}
+    for number, photo in enumerate(photos[:3]):
+        top_photos[f"photo_{number + 1}"] = photo
+
+    session = Session()
     try:
-        if len(photos) == 1:
-            photo_1 = photos[0]
-            photo_2 = None
-            photo_3 = None
-        elif len(photos) == 2:
-            photo_1 = photos[0]
-            photo_2 = photos[1]
-            photo_3 = None
-        elif len(photos) == 3:
-            photo_1 = photos[0]
-            photo_2 = photos[1]
-            photo_3 = photos[2]
-        else:
-            photo_1 = None
-            photo_2 = None
-            photo_3 = None
-        session = Session()
-        top3 = Top3Photo(favourites_id=favourites_id, photo_1=photo_1, photo_2=photo_2, photo_3=photo_3)
+        top3 = Top3Photo(favourites_id=favourites_id, **top_photos)
         session.add(top3)
         session.commit()
-    except Exception:
-        session = Session()
+    except SQLAlchemyError as error:
         session.rollback()
 
 
